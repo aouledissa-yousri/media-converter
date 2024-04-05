@@ -1,1 +1,2 @@
 from .ImageConversionController import ImageConversionController
+from .AudioConversionController import AudioConversionController

@@ -12,7 +12,7 @@ class MediaHelper:
     @staticmethod
     async def createTempFile(file: UploadFile):
 
-        destinationPath = os.path.join(Path("uploads"), file.filename)
+        destinationPath = os.path.join(Path("uploads"), file.filename.replace(" ","_"))
 
         # Open the destination file for writing
         with open(destinationPath, "wb+") as destination:
