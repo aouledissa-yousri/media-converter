@@ -26,7 +26,6 @@ class MediaHelper:
 
     @staticmethod
     def runMediaConversionProcess(processPath: str, parameters: List[str]):
-        print(parameters)
         subprocess.run([processPath] + parameters, check=True)
 
     @staticmethod  
