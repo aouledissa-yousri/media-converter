@@ -1,6 +1,8 @@
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useRef, useState } from "react";
+import { MediaFormatHelper } from "../helpers/MediaFormatHelper";
+import { ConversionFacade } from "../facades/ConversionFacade";
 
 
 
@@ -14,11 +16,12 @@ export default function ConverterComponent() {
 
 
     const [outputFormat, setOutputFormat] = useState("")
+    const [formats, setFormats] = useState<string[]>([])
+
+    const [fileLink, setFileLink] = useState("")
 
 
-    const setConversionOutputFormat = () => {
-
-    }
+    const setConversionOutputFormat = (event: any) => setOutputFormat(event.target.value as string)
 
     const handleFileChange = (event: any) => {
 
@@ -27,19 +30,31 @@ export default function ConverterComponent() {
             name: event.target.files[0].name
         })
 
+        loadFormats(event.target.files[0].name)
+
+
+
     }
 
     const upload = () => {
-        fileInputRef.current.click()
+        if(fileInputRef.current) fileInputRef.current.click()
     }
 
-    const fileAvailable = () => selectedFile.file === null
+    const fileAvailable = () => selectedFile.file !== null && outputFormat !== ""
+
+    const loadFormats = (filename: string) => setFormats(MediaFormatHelper.filterFormats(filename))
+
+    const convertFile = async () => {
+        const file = await ConversionFacade.convert(selectedFile.file as unknown as File, selectedFile.name, outputFormat)
+        console.log(file.name)
+        setFileLink(URL.createObjectURL(file))
+    }
 
     return (
         <div>
             <input
                 type="file"
-                accept="image/*,video/*,audio/*"
+                accept="image/jpeg,image/png,image/webp,image/svg+xml,video/mp4,video/webm,video/x-avi,video/x-flv,video/quicktime,audio/ogg,audio/mp4,audio/mpeg,audio/wav"
                 ref={fileInputRef}
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
@@ -51,8 +66,6 @@ export default function ConverterComponent() {
 
 
             <Box>
-
-
                 <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">Output Format</InputLabel>
                     <Select
@@ -62,9 +75,11 @@ export default function ConverterComponent() {
                         label="Output Format"
                         onChange={setConversionOutputFormat}
                     >
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        {formats.map((format) => (
+                            <MenuItem key={format} value={format} selected={formats.indexOf(format) === 0}>
+                                {format.toUpperCase()}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
             </Box>
@@ -73,7 +88,9 @@ export default function ConverterComponent() {
             <br/>
             <br/>
 
-            <Button variant="contained" component="span" onClick={upload} disabled={fileAvailable()}>Convert File</Button>
+            <Button variant="contained" component="span" onClick={convertFile} disabled={!fileAvailable()}>Convert File</Button>
+
+            <h3><a href={fileLink} hidden={fileLink === ""}>Download File</a></h3>
 
         </div>
     )
