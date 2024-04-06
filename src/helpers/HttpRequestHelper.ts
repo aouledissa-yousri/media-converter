@@ -13,11 +13,11 @@ export class HttpRequestHelper {
                 responseType: 'blob', 
             });
             
-           
             return response.data; 
         } catch (error) {
             console.error('File upload error:', error);
             throw error; 
         }
     }
+
 }

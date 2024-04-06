@@ -21,6 +21,10 @@ export class MediaFormatHelper {
         return filename.split(".")[1]
     }
 
+    public static getFileName(filename:string){
+        return filename.split(".")[0]
+    }
+
     private static getFormatType(extension: string) {
         if(this.formats.image.indexOf(extension) !== -1) return this.formats.image
         else if(this.formats.audio.indexOf(extension) !== -1) return this.formats.audio

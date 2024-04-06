@@ -18,7 +18,10 @@ export default function ConverterComponent() {
     const [outputFormat, setOutputFormat] = useState("")
     const [formats, setFormats] = useState<string[]>([])
 
-    const [fileLink, setFileLink] = useState("")
+    const [outputFile, setOutputFile] = useState({
+        link: "",
+        name: ""
+    })
 
 
     const setConversionOutputFormat = (event: any) => setOutputFormat(event.target.value as string)
@@ -46,8 +49,10 @@ export default function ConverterComponent() {
 
     const convertFile = async () => {
         const file = await ConversionFacade.convert(selectedFile.file as unknown as File, selectedFile.name, outputFormat)
-        console.log(file.name)
-        setFileLink(URL.createObjectURL(file))
+        setOutputFile({
+            link: URL.createObjectURL(file),
+            name: MediaFormatHelper.getFileName(selectedFile.name) + "." + outputFormat
+        })
     }
 
     return (
@@ -90,7 +95,7 @@ export default function ConverterComponent() {
 
             <Button variant="contained" component="span" onClick={convertFile} disabled={!fileAvailable()}>Convert File</Button>
 
-            <h3><a href={fileLink} hidden={fileLink === ""}>Download File</a></h3>
+            <h3><a href={outputFile.link} hidden={outputFile.link === ""} download={outputFile.name}>Download File</a></h3>
 
         </div>
     )

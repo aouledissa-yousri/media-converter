@@ -170,7 +170,7 @@ export class ConversionFacade {
             return VideoConverterService.convertMP4toWEBM(file)
 
           default:
-            return VideoConverterService.convertVideoToAudio(file)
+            return VideoConverterService.convertVideoToAudio(file, outputFormat)
         }
 
       case "avi":
@@ -189,7 +189,7 @@ export class ConversionFacade {
             return VideoConverterService.convertAVItoWEBM(file)
 
           default:
-            return VideoConverterService.convertVideoToAudio(file)
+            return VideoConverterService.convertVideoToAudio(file, outputFormat)
         }
 
 
@@ -208,7 +208,7 @@ export class ConversionFacade {
             return VideoConverterService.convertFLVtoWEBM(file)
 
           default:
-            return VideoConverterService.convertVideoToAudio(file)
+            return VideoConverterService.convertVideoToAudio(file, outputFormat)
         }
 
 
@@ -228,7 +228,7 @@ export class ConversionFacade {
             return VideoConverterService.convertMOVtoWEBM(file)
 
           default:
-            return VideoConverterService.convertVideoToAudio(file)
+            return VideoConverterService.convertVideoToAudio(file, outputFormat)
         }
 
 
@@ -247,7 +247,7 @@ export class ConversionFacade {
             return VideoConverterService.convertWEBMtoMOV(file)
 
           default:
-            return VideoConverterService.convertVideoToAudio(file)
+            return VideoConverterService.convertVideoToAudio(file, outputFormat)
         }
 
       default:

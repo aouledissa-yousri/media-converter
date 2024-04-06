@@ -111,7 +111,7 @@ export class VideoConverterService {
 
 
     //convert video to audio
-    public static async convertVideoToAudio(video: File): Promise<any> {
-        return await HttpRequestHelper.sendFormDataPostRequest(API_URL + "/videoAudio/", MediaPayloadHelper.createFormDataVideoPayload(video))
+    public static async convertVideoToAudio(video: File, outputFormat: string): Promise<any> {
+        return await HttpRequestHelper.sendFormDataPostRequest(API_URL + `/videoAudio/?outputFormat=${outputFormat}`, MediaPayloadHelper.createFormDataVideoAudioConversionPayload(video, outputFormat))
     }
 }

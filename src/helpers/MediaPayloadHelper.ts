@@ -20,5 +20,14 @@ export class MediaPayloadHelper {
         return formData
     }
 
+    public static createFormDataVideoAudioConversionPayload(file: File, outputFormat: string){
+        const formData = new FormData()
+        formData.append("outputFormat", outputFormat)
+        formData.append("video", file)
+
+        return formData
+
+    }
+
     
 }
