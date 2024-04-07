@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import { useRef, useState } from "react";
 import { MediaFormatHelper } from "../helpers/MediaFormatHelper";
 import { ConversionFacade } from "../facades/ConversionFacade";
+import LoadingDialog from "../dialogs/LoadingDialog";
 
 
 
@@ -22,6 +23,8 @@ export default function ConverterComponent() {
         link: "",
         name: ""
     })
+
+    const [conversionLoading, setConversionLoading] = useState(false)
 
 
     const setConversionOutputFormat = (event: any) => setOutputFormat(event.target.value as string)
@@ -48,11 +51,16 @@ export default function ConverterComponent() {
     const loadFormats = (filename: string) => setFormats(MediaFormatHelper.filterFormats(filename))
 
     const convertFile = async () => {
+        setConversionLoading(true)
+
         const file = await ConversionFacade.convert(selectedFile.file as unknown as File, selectedFile.name, outputFormat)
         setOutputFile({
             link: URL.createObjectURL(file),
             name: MediaFormatHelper.getFileName(selectedFile.name) + "." + outputFormat
         })
+
+        setConversionLoading(false)
+
     }
 
     return (
@@ -68,6 +76,8 @@ export default function ConverterComponent() {
             <Button variant="contained" component="span" onClick={upload}>Select File</Button>
 
             <h3>{selectedFile.name}</h3>
+
+            <LoadingDialog message={`Converting to ${outputFormat}`} isOpen={conversionLoading}/>
 
 
             <Box>
